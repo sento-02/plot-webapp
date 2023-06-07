@@ -26,14 +26,13 @@ def get_datafile_list():
 
 
 @app.route('/test_graph')
+@app.route('/graph')
 def response_of_graph():
-    datafiles = mydb.read_db(mydb.READ_DataFile_Request(all_flag=False, id_list=[1]))
-
-    htmls = [plot.create_graph(datafile) for datafile in datafiles]
-    return render_template('graphs.html', items=htmls)
+    datafile = mydb.read_db(mydb.READ_DataFile_Request(all_flag=False, id_list=['1']))[0]
+    return plot.create_graph(datafile)
 
 
-@app.route('v2/test_graph/')
+@app.route('/v2/test_graph/')
 def v2_response_of_graph(request: Any):
     try:
         id_list = request.GET.getlist('id')

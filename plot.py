@@ -18,7 +18,6 @@ def create_graph(datafile):
                     yaxis=dict(showline=True, linecolor="black", ticks='inside', showgrid=True, tickfont=dict(size=fontsize), mirror=False, ticklen=5, tickwidth=1, tickcolor='black'),
                     )
     fig = go.Figure(data=go.Scatter(x=data[colums[0]], y=data[colums[1]], mode='lines+markers', line=dict(width=3)), layout=Layout)
-    fig.show()
     return fig.to_html(full_html=False, default_height=600, default_width=1000)
 
 
