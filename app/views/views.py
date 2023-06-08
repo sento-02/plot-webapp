@@ -28,15 +28,11 @@ def response_of_graph():
     return plot.create_graph(datafile)
 
 
-@bp.route('/v2/test_graph/')
+@bp.route('/v2/test_graph')
 def v2_response_of_graph():
     try:
-        #id_list = request.GET.getlist('id')
-        id_list = [1,2,3]
+        id_list = request.GET.getlist('id')
         datafile_list = db.read_db(db.READ_DataFile_Request(all_flag=False, id_list=id_list))
-
-        htmls = [plot.create_graph(datafile) for datafile in datafile_list]
-        return render_template('graphs.html', items=htmls)
+        return plot.create_graph(datafile_list)
     except Exception as e:
-        print(e)
-        return
+        return str(e)

@@ -2,6 +2,9 @@ import sqlite3
 from sqlite3 import Error
 import os
 
+#-------------------------------------------------
+# クラス
+
 # dataファイル情報クラス
 class DataFile:
     def __init__(self, id, basename, path=None):
