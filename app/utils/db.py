@@ -52,7 +52,7 @@ def read_db(read_datafile_request):
     conn = None
     datafile_list = []
     try:
-        conn = sqlite3.connect('db/DATAFILE.db')  # Create a database connection to a SQLite database
+        conn = sqlite3.connect('data/db.sqlite')  # Create a database connection to a SQLite database
         c = conn.cursor()
         if read_datafile_request.all_flag:
             c.execute("SELECT id, basename, path FROM datafile")
@@ -78,7 +78,7 @@ def read_db(read_datafile_request):
 def init_db():
     conn = None
     try:
-        conn = sqlite3.connect('db/DATAFILE.db')  # Create a database connection to a SQLite database
+        conn = sqlite3.connect('data/db.sqlite')  # Create a database connection to a SQLite database
         c = conn.cursor()
         
         # テーブルが既に存在していれば削除
@@ -91,7 +91,7 @@ def init_db():
                     path TEXT NOT NULL)''')
 
         # data/ディレクトリ内のCSVファイルを検索してデータを挿入
-        data_dir = 'data/'
+        data_dir = 'data/csv'
         for filename in os.listdir(data_dir):
             if filename.endswith('.csv'):
                 basename = os.path.splitext(filename)[0]
@@ -118,6 +118,6 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    datafile_list = read_db(READ_DataFile_Request(all_flag=False, id_list=[1,2]))
+    datafile_list = read_db(READ_DataFile_Request(all_flag=True))
     for datafile in datafile_list:
         datafile.print()
