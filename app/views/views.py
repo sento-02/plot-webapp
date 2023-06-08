@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, request, blueprints
+from flask import jsonify, request, blueprints, current_app
 from ..utils import db, plot
 
 
@@ -24,22 +24,25 @@ def response_of_graph():
     datafile = db.request_db(db.READ_DataFile_Request(all_flag=False, id_list=['1']))[0]
     return plot.create_graph(datafile)
 
-@bp.route('/test_graph')
-@bp.route('/v2/test_graph')
+@bp.route('/test_graph', methods=['POST'])
+@bp.route('/v2/test_graph', methods=['POST'])
 def v2_response_of_graph():
-    try:
-        id_list = request.GET.getlist('id')
-        graph = db.request_db(db.WRITE_Graph_Request(id_list))
-        return graph.hash
-    except Exception as e:
-        return str(e)
+    current_app.logger.info(request.headers)
+    current_app.logger.info(request.data)
+    current_app.logger.info(request.json)
+    id_list = request.json['id']
+    graph = db.request_db(db.WRITE_Graph_Request(id_list))
+    res = jsonify({"url": "src_graph/" + graph.hash})
+    current_app.logger.info(res)
+    return res
+
 
 
 @bp.route('/v3/test_graph')
 def v3_response_of_graph():
     id_list = [1,3]
     graph = db.request_db(db.WRITE_Graph_Request(id_list = id_list))
-    return "src_graph/" + graph.hash
+    return jsonify({"url": "src_graph/" + graph.hash})
 
 
 @bp.route('/src_graph/<hash>')
