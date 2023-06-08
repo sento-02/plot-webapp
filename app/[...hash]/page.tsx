@@ -11,7 +11,7 @@ export default function Home(){
     return (
       <main>
         <div>
-          <iframe src='/src/[hash]' width="100%" height="600"></iframe>
+          <iframe src='/:hash*' width="100%" height="600"></iframe>
         </div>
       </main>
     )

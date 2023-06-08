@@ -11,11 +11,12 @@ type URLresponse = {
 }
 
 export const PlotRequest = async (req:Request) => {
-    const response = await fetch('/test/graph', {
+    const response = await fetch('/test_graph', {
         method: 'POST',
         headers: {'Content-Type': 'application/json',},
         body: JSON.stringify(req),
     })
     const data = await response.json() as URLresponse
+    console.log(data)
     return data.url
 }
