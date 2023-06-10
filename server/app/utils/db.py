@@ -3,10 +3,12 @@ from sqlite3 import Error
 import os
 import hashlib
 
-#-------------------------------------------------
+# -------------------------------------------------
 # クラス
 
 # dataファイル情報クラス
+
+
 class DataFile:
     def __init__(self, id, basename, path=None):
         self.id = id
@@ -24,9 +26,10 @@ class DataFile:
             print(e)
 
         return self
-    
+
     def print(self):
-        print(self.id, self.basename, self.path, self.graph_png_path, self.graph_html_path)
+        print(self.id, self.basename, self.path,
+              self.graph_png_path, self.graph_html_path)
 
 
 class GraphFile:
@@ -37,7 +40,7 @@ class GraphFile:
 
 
 # データファイルリクエストクラス
-# mode="READ" or "WRITE", 
+# mode="READ" or "WRITE",
 # READの場合はid_listかall_flagを指定
 class READ_DataFile_Request:
     def __init__(self, all_flag=False, id_list=None):
@@ -46,12 +49,13 @@ class READ_DataFile_Request:
         self.id_list = id_list
         if self.all_flag == False and id_list == None:
             raise ValueError('id_list or all_flag must be specified.')
-    
+
     def __call__(self, cursor):
         if self.all_flag:
             cursor.execute("SELECT id, basename, path FROM datafile")
         else:
-            cursor.execute("SELECT id, basename, path FROM datafile WHERE id IN ({})".format(','.join('?'*len(self.id_list))), self.id_list)
+            cursor.execute("SELECT id, basename, path FROM datafile WHERE id IN ({})".format(
+                ','.join('?'*len(self.id_list))), self.id_list)
         rows = cursor.fetchall()
         datafile_list = []
         for row in rows:
@@ -88,16 +92,18 @@ class WRITE_Graph_Request:
     def __call__(self, cursor):
         # id_listをソートしてASH-256でハッシュ化
         salt = 'salt0910'
-        hash = hashlib.sha256(self.id_list_str.encode('utf-8') + salt.encode('utf-8')).hexdigest()
-        row  = cursor.execute("SELECT * FROM graph WHERE hash=?", (hash,)).fetchone()
+        hash = hashlib.sha256(self.id_list_str.encode(
+            'utf-8') + salt.encode('utf-8')).hexdigest()
+        row = cursor.execute(
+            "SELECT * FROM graph WHERE hash=?", (hash,)).fetchone()
         if row is None:
-            cursor.execute("INSERT INTO graph (hash, id, path) VALUES (?, ?, ?)", (hash, self.id_list_str, "None"))
+            cursor.execute("INSERT INTO graph (hash, id, path) VALUES (?, ?, ?)",
+                           (hash, self.id_list_str, "None"))
         self.hash = hash
         return self
 
 
-
-#-------------------------------------------------
+# -------------------------------------------------
 # モジュール
 
 
@@ -105,7 +111,8 @@ class WRITE_Graph_Request:
 def request_db(db_request):
     conn = None
 
-    conn = sqlite3.connect('data/db.sqlite')  # Create a database connection to a SQLite database
+    # Create a database connection to a SQLite database
+    conn = sqlite3.connect('data/db.sqlite')
     c = conn.cursor()
     contents = db_request(c)
     conn.commit()
@@ -116,12 +123,13 @@ def request_db(db_request):
 def init_db():
     conn = None
 
-    conn = sqlite3.connect('data/db.sqlite')  # Create a database connection to a SQLite database
+    # Create a database connection to a SQLite database
+    conn = sqlite3.connect('data/db.sqlite')
     c = conn.cursor()
-    
+
     # テーブルが既に存在していれば削除
     c.execute("DROP TABLE IF EXISTS datafile")
-    
+
     # datafileテーブルを作成
     c.execute('''CREATE TABLE datafile
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -134,18 +142,18 @@ def init_db():
         if filename.endswith('.csv'):
             basename = os.path.splitext(filename)[0]
             path = os.path.join(data_dir, filename)
-            c.execute("INSERT INTO datafile (basename, path) VALUES (?, ?)", (basename, path))
+            c.execute(
+                "INSERT INTO datafile (basename, path) VALUES (?, ?)", (basename, path))
 
     # テーブルが既に存在していれば削除
     c.execute("DROP TABLE IF EXISTS graph")
-    
+
     # graphテーブルを作成
     # hash:文字列、id:整数のリスト、path:グラフ画像のパス
     c.execute('''CREATE TABLE graph
                 (hash TEXT PRIMARY KEY,
                 id TEXT NOT NULL,
                 path TEXT)''')
-
 
     # 変更をコミットする
     conn.commit()
@@ -157,7 +165,7 @@ def init_db():
     for row in rows:
         print(row)
     """
-  
+
     conn.close()
 
 
