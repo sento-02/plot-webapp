@@ -39,3 +39,7 @@ $ python server/run.py
 $ npm run dev
 ```
 その後、ブラウザで http://localhost:3000 を開いてください。
+
+## 更新履歴
+### 6/19
+mainにbackendとfrontendをマージ
