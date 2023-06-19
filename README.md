@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# データ解析Webアプリケーション
 
-## Getting Started
+## 概要
 
-First, run the development server:
+このアプリケーションは、Web UIを介してデータ解析を実行します。データベースのCSVファイルを取り扱い、そのデータを視覚的にプロットします。
+
+## 特徴
+
+* Web UIからのデータ解析
+* CSVデータのプロット
+* インタラクティブなデータビジュアライゼーション
+
+## 技術スタック
+
+* Next.js - フロントエンドフレームワーク
+* Flask - サーバーサイドフレームワーク
+* Plotly - データの視覚化
+
+## インストール方法
+
+本プロジェクトをクローンし、依存関係をインストールします：
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+$ git clone <repository_url>
+$ cd <repository_name>
+$ npm install
+$ pip install -r requirements.txt
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 使用方法
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+サーバーサイドアプリケーションとクライアントサイドアプリケーションを別々に起動します：
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+# サーバーサイド
+$ python server/run.py
 
-## Learn More
+# クライアントサイド (別のターミナルで実行)
+$ npm run dev
+```
+その後、ブラウザで http://localhost:3000 を開いてください。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 更新履歴
+### 6/19
+mainにbackendとfrontendをマージ
