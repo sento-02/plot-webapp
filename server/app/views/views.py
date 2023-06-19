@@ -20,9 +20,9 @@ def get_datafile_list():
 @bp.route('/v1/test_graph')
 @bp.route('/graph')
 def response_of_graph():
-    datafile = db.request_db(db.READ_DataFile_Request(
-        all_flag=False, id_list=['1']))[0]
-    return plot.create_graph(datafile)
+    datafile_list = db.request_db(db.READ_DataFile_Request(
+        all_flag=False, id_list=['1']))
+    return plot.create_graph(datafile_list)
 
 
 @bp.route('/test_graph', methods=['POST'])

@@ -112,7 +112,7 @@ def request_db(db_request):
     conn = None
 
     # Create a database connection to a SQLite database
-    conn = sqlite3.connect('data/db.sqlite')
+    conn = sqlite3.connect('server/data/db.sqlite')
     c = conn.cursor()
     contents = db_request(c)
     conn.commit()
@@ -124,7 +124,7 @@ def init_db():
     conn = None
 
     # Create a database connection to a SQLite database
-    conn = sqlite3.connect('data/db.sqlite')
+    conn = sqlite3.connect('server/data/db.sqlite')
     c = conn.cursor()
 
     # テーブルが既に存在していれば削除
@@ -137,7 +137,7 @@ def init_db():
                 path TEXT)''')
 
     # data/ディレクトリ内のCSVファイルを検索してデータを挿入
-    data_dir = 'data/csv'
+    data_dir = 'server/data/csv'
     for filename in os.listdir(data_dir):
         if filename.endswith('.csv'):
             basename = os.path.splitext(filename)[0]
