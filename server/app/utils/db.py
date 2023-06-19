@@ -92,7 +92,7 @@ class WRITE_Graph_Request:
     def __call__(self, cursor):
         # id_listをソートしてASH-256でハッシュ化
         salt = 'salt0910'
-        hash = hashlib.sha256(self.id_list_str.encode(
+        hash = hashlib.sha1(self.id_list_str.encode(
             'utf-8') + salt.encode('utf-8')).hexdigest()
         row = cursor.execute(
             "SELECT * FROM graph WHERE hash=?", (hash,)).fetchone()
