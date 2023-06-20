@@ -3,7 +3,7 @@
 import { PlotRequest } from './api/api'
 import React, { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
-import { InputCheckboxChild } from './components/checkbox'
+//import { InputCheckboxChild } from './components/checkbox'
 import Layout from './components/Layout'
 import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
@@ -26,6 +26,7 @@ type Request = {
 
 export default function Home(){
 
+    // get fileinfo from database.
     const [fileinfos, setFileinfos] = useState<Fileinfo[]>([])
     useEffect(() => {
         const fetchFileinfo = async () => {
@@ -36,7 +37,7 @@ export default function Home(){
         fetchFileinfo()
       },[])
 
-
+    // page routing
     const router = useRouter()
     const DisplayGraph = (hash:string, query:Request) => {
         router.push(`/${hash}`)
@@ -53,20 +54,9 @@ export default function Home(){
     const handleRowSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
         setSelectedIds(rowSelectionModel as (string | number)[]);
       };
-      
+    
 
-
-    const [reqids, setReqids] = useState<string[]>([])
-    const handleIdChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (reqids.includes(e.target.value)) {
-            setReqids(
-            reqids.filter((checkedValue) => checkedValue !== e.target.value)
-        );
-        } else {
-            setReqids([...reqids, e.target.value]);
-        }
-    };
-
+    // handle log/liner
     const [reqlog, setLog] = useState<boolean>(false)
     const handleLogChecked = (chk: boolean) => {
         setLog(chk)
@@ -83,19 +73,6 @@ export default function Home(){
         const graphurl = await PlotRequest(query)
         DisplayGraph(graphurl, query)
     }
-    
-
-    const plotFromClick = async (data:Fileinfo) => {
-        setReqids([data.id.toString()])
-        setReqfilenames([data.filename])
-        await plotGraph()
-    } 
-
-
-    // const [checkedData, setCheckedData] = useState(false)
-    // const handleChangeChecked = (chk: boolean) => {
-    //     setCheckedData(chk)
-    // }
 
     return (
     <Layout>
