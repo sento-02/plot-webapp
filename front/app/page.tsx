@@ -4,6 +4,10 @@ import { PlotRequest } from './api/api'
 import React, { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import { InputCheckboxChild } from './components/checkbox'
+import Layout from './components/Layout'
+import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
+import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
 
 type Fileinfo = {
     filename: string
@@ -39,6 +43,19 @@ export default function Home(){
     }
 
 
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'filename', headerName: 'File Name', width: 200 },
+      ];
+
+    // handle selection
+    const [selectedIds, setSelectedIds] = React.useState<(string | number)[]>([]);
+    const handleRowSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
+        setSelectedIds(rowSelectionModel as (string | number)[]);
+      };
+      
+
+
     const [reqids, setReqids] = useState<string[]>([])
     const handleIdChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (reqids.includes(e.target.value)) {
@@ -59,13 +76,14 @@ export default function Home(){
     
     const plotGraph = async () => {
         const query:Request = {
-            id: reqids,
+            id: selectedIds.map(id => id.toString()), 
             filename: reqfilenames,
             log: reqlog
         }
         const graphurl = await PlotRequest(query)
         DisplayGraph(graphurl, query)
     }
+    
 
     const plotFromClick = async (data:Fileinfo) => {
         setReqids([data.id.toString()])
@@ -80,35 +98,21 @@ export default function Home(){
     // }
 
     return (
-    <main>
-        <div>
-            <InputCheckboxChild
-                value='log' 
-                checked={reqlog}
-                handleChange={(e) => handleLogChecked(e.target.checked)}
-            />  
-        </div>
-        <div>
-            <ul>
-                {fileinfos.map(data => (
-                <li key={data.id}>
-                    <div onClick={() => plotFromClick(data)}>
-                        {data.filename}
-                    </div>
-                    <div>
-                        <InputCheckboxChild
-                            value= {data.id.toString()}
-                            checked={reqids.includes(data.id.toString())}
-                            handleChange={handleIdChecked}
-                        />
-                    </div>
-                </li>
-                ))}
-            </ul>
-        </div>
-        <button onClick={() => plotGraph()}>
-            plot!
-        </button>
-    </main>
+    <Layout>
+        <Box> 
+            <DataGrid 
+            rows={fileinfos} 
+            columns={columns} 
+            checkboxSelection 
+            onRowSelectionModelChange={handleRowSelectionChange} 
+            rowSelectionModel={selectedIds}
+            />
+        </Box>
+        <Box mt={1}>
+            <Button variant='contained' onClick={() => plotGraph()}>
+                Plot
+            </Button>
+        </Box>
+    </Layout>
     )
 }

@@ -1,22 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    SERVER_URL: process.env.SERVER_URL,
+  },
   async rewrites() {
     return [
       {
         source: '/init',
-        destination: 'http://192.168.11.3:80/init',//change here
+        destination: `${process.env.SERVER_URL}/init`,
       },
-
       {
-          source: '/graph',
-          destination: 'http://192.168.11.3:80/test_graph',//change here
+        source: '/graph',
+        destination: `${process.env.SERVER_URL}/test_graph`,
       },
-
       {
-          source: '/:hash*',
-          destination: 'http://192.168.11.3:80/:hash*',//change here
+        source: '/:hash*',
+        destination: `${process.env.SERVER_URL}/:hash*`,
       },
-
     ]
   },
 }
