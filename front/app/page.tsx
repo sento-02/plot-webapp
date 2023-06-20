@@ -4,6 +4,7 @@ import { PlotRequest } from './api/api'
 import React, { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import { InputCheckboxChild } from './components/checkbox'
+import Layout from './components/Layout'
 
 type Fileinfo = {
     filename: string
@@ -80,14 +81,7 @@ export default function Home(){
     // }
 
     return (
-    <main>
-        <div>
-            <InputCheckboxChild
-                value='log' 
-                checked={reqlog}
-                handleChange={(e) => handleLogChecked(e.target.checked)}
-            />  
-        </div>
+    <Layout>
         <div>
             <ul>
                 {fileinfos.map(data => (
@@ -109,6 +103,6 @@ export default function Home(){
         <button onClick={() => plotGraph()}>
             plot!
         </button>
-    </main>
+    </Layout>
     )
 }
