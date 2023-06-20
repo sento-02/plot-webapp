@@ -2,7 +2,6 @@ import { request } from "http"
 
 type Request = {
     id: string[]
-    //filename: string[]
     log: boolean
 }
 

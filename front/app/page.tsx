@@ -2,8 +2,6 @@
 
 import { PlotRequest } from './api/api'
 import React, { useState, useEffect, ReactNode } from "react"
-import { useRouter } from 'next/navigation'
-//import { InputCheckboxChild } from './components/checkbox'
 import Layout from './components/Layout'
 import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
@@ -20,13 +18,12 @@ type Fileinfos = {
 
 type Request = {
     id: string[]
-    //filename: string[]
     log: boolean
 }
 
 export default function Home(){
 
-    // get fileinfo from database.
+    // get fileinfo from database
     const [fileinfos, setFileinfos] = useState<Fileinfo[]>([])
     useEffect(() => {
         const fetchFileinfo = async () => {
@@ -37,24 +34,14 @@ export default function Home(){
         fetchFileinfo()
       },[])
 
-    // page routing
-    const router = useRouter()
+    //return graph endpoint
     const Graph = (hash:string, query:Request) => {
-        //router.push(`/${hash}`)
         return (
             <div>
                 {hash ? <iframe src={"/"+hash} width="100%" height="600"></iframe> : <div> select data </div>}
             </div>
         )
     }
-
-    // function MyComponent({ isLoggedIn }) {
-    //     return (
-    //       <div>
-    //         {isLoggedIn ? <p>Welcome, User!</p> : <p>Please log in.</p>}
-    //       </div>
-    //     );
-    //   }
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -74,21 +61,18 @@ export default function Home(){
         setLog(chk)
     }
 
-    // const [reqfilenames, setReqfilenames] = useState<string[]>([])
-    
-    // const [visible, setVisible] = React.useState<Boolean>();
-    // const handleVisible = () => {
-    //     setVisible(true)
-    // }
+    //handle graph endpoint
     const [Graphobject, setGraphobject] = useState<ReactNode>(null)
     const handleGraphobject = (graphurl: string, query: Request) => {
         const graph = Graph(graphurl, query)
         setGraphobject(graph)
     }
+
+    //plot
+    //need to modify: when PlotRequest returns null
     const plotGraph = async () => {
         const query:Request = {
             id: selectedIds.map(id => id.toString()), 
-            //filename: reqfilenames,
             log: reqlog
         }
         const graphurl = await PlotRequest(query)
