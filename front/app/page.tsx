@@ -7,6 +7,7 @@ import { InputCheckboxChild } from './components/checkbox'
 import Layout from './components/Layout'
 import { DataGrid, GridRowSelectionModel } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
 
 type Fileinfo = {
     filename: string
@@ -107,9 +108,11 @@ export default function Home(){
             rowSelectionModel={selectedIds}
             />
         </Box>
-        <button onClick={() => plotGraph()}>
-            plot!
-        </button>
+        <Box mt={1}>
+            <Button variant='contained' onClick={() => plotGraph()}>
+                Plot
+            </Button>
+        </Box>
     </Layout>
     )
 }
