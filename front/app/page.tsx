@@ -1,7 +1,7 @@
 "use client"
 
 import { PlotRequest } from './api/api'
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ReactNode } from "react"
 import { useRouter } from 'next/navigation'
 //import { InputCheckboxChild } from './components/checkbox'
 import Layout from './components/Layout'
@@ -20,7 +20,7 @@ type Fileinfos = {
 
 type Request = {
     id: string[]
-    filename: string[]
+    //filename: string[]
     log: boolean
 }
 
@@ -39,10 +39,22 @@ export default function Home(){
 
     // page routing
     const router = useRouter()
-    const DisplayGraph = (hash:string, query:Request) => {
-        router.push(`/${hash}`)
+    const Graph = (hash:string, query:Request) => {
+        //router.push(`/${hash}`)
+        return (
+            <div>
+                {hash ? <iframe src={"/"+hash} width="100%" height="600"></iframe> : <div> select data </div>}
+            </div>
+        )
     }
 
+    // function MyComponent({ isLoggedIn }) {
+    //     return (
+    //       <div>
+    //         {isLoggedIn ? <p>Welcome, User!</p> : <p>Please log in.</p>}
+    //       </div>
+    //     );
+    //   }
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -62,16 +74,25 @@ export default function Home(){
         setLog(chk)
     }
 
-    const [reqfilenames, setReqfilenames] = useState<string[]>([])
+    // const [reqfilenames, setReqfilenames] = useState<string[]>([])
     
+    // const [visible, setVisible] = React.useState<Boolean>();
+    // const handleVisible = () => {
+    //     setVisible(true)
+    // }
+    const [Graphobject, setGraphobject] = useState<ReactNode>(null)
+    const handleGraphobject = (graphurl: string, query: Request) => {
+        const graph = Graph(graphurl, query)
+        setGraphobject(graph)
+    }
     const plotGraph = async () => {
         const query:Request = {
             id: selectedIds.map(id => id.toString()), 
-            filename: reqfilenames,
+            //filename: reqfilenames,
             log: reqlog
         }
         const graphurl = await PlotRequest(query)
-        DisplayGraph(graphurl, query)
+        handleGraphobject(graphurl, query)
     }
 
     return (
@@ -89,6 +110,9 @@ export default function Home(){
             <Button variant='contained' onClick={() => plotGraph()}>
                 Plot
             </Button>
+        </Box>
+        <Box>
+            {Graphobject}
         </Box>
     </Layout>
     )
