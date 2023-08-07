@@ -43,4 +43,3 @@ $ npm run dev
 ## 更新履歴
 ### 6/19
 mainにbackendとfrontendをマージ
->>>>>>> 46102c33da796ff467b70c24ddac8962bebc8d16
