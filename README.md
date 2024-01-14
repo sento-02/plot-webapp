@@ -2,6 +2,8 @@
 
 ## 概要
 
+Qiita：https://qiita.com/kaneda-masaya/private/7abc3355d1ddd9588110
+
 このアプリケーションは、Web UIを介して効率的に研究データの解析を行うアプリケーションです。2次元系列データをインタラクティブなグラフを表示します。
 
 特徴
